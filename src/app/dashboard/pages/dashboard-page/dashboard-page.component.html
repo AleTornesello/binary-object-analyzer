@@ -1,0 +1,21 @@
+<div class="card">
+  <p-tabs value="0">
+    <p-tablist>
+      <p-tab value="0">Reader</p-tab>
+      <p-tab value="1" [disabled]="!canGoToSequencer">Sequencer</p-tab>
+      <p-tab value="2" [disabled]="!canGoToAnalyzer">Analyzer</p-tab>
+      <p-tab value="3" [disabled]="!canGoToExporter">Exporter</p-tab>
+    </p-tablist>
+    <p-tabpanels>
+      <p-tabpanel value="0">
+        <app-reader-tab (onLoadFileData)="onLoadFileData($event)"></app-reader-tab>
+      </p-tabpanel>
+      <p-tabpanel value="1">
+      </p-tabpanel>
+      <p-tabpanel value="2">
+      </p-tabpanel>
+      <p-tabpanel value="3">
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
+</div>

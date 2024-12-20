@@ -1,0 +1,15 @@
+@use "_colors.scss";
+@use "_card.scss";
+@use "_tabs.scss";
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-color);
+  width: 100vw;
+  height: 100vh;
+}

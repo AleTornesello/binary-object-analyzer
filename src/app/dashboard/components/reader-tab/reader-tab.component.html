@@ -1,0 +1,10 @@
+<div class="reader-tab">
+  <div class="file-picker-container">
+    <file-pond
+      [options]="pondOptions"
+      (onaddfile)="onAddFile($event)"
+    >
+    </file-pond>
+  </div>
+  <p-button label="Load" (onClick)="onLoadClick()" [disabled]="!canLoad"></p-button>
+</div>

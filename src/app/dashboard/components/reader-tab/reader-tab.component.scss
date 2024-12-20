@@ -1,0 +1,10 @@
+.reader-tab {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .file-picker-container {
+    width: 100%;
+  }
+}

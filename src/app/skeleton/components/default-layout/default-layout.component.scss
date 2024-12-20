@@ -1,0 +1,7 @@
+.default-layout {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+
+  padding: calc(var(--padding-factor) * 1);
+}

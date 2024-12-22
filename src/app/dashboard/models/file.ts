@@ -3,9 +3,9 @@ export class FileData {
   size: number;
   type: string;
   extension: string;
-  data: number[];
+  data: Int8Array;
 
-  constructor(name: string, size: number, type: string, extension: string, data: number[]) {
+  constructor(name: string, size: number, type: string, extension: string, data: Int8Array) {
     this.name = name;
     this.size = size;
     this.type = type;
@@ -14,15 +14,14 @@ export class FileData {
   }
 
   static fromArrayBuffer(file: File, arrayBuffer: ArrayBuffer): FileData {
-    const typedArray = new Uint8Array(arrayBuffer);
-    const numberArray = Array.from(typedArray);
+    const typedArray = new Int8Array(arrayBuffer);
 
     return new FileData(
       file.name,
       file.size,
       file.type,
       file.name.split('.').pop() ?? '',
-      numberArray
+      typedArray
     );
   }
 }

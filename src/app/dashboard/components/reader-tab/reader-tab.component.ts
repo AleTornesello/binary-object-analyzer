@@ -53,4 +53,8 @@ export class ReaderTabComponent {
   public get canLoad() {
     return this._fileData !== null;
   }
+
+  public onRemoveFile() {
+    this._fileData = null;
+  }
 }

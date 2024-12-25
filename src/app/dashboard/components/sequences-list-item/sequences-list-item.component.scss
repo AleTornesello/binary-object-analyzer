@@ -1,0 +1,30 @@
+.sequences-list-item {
+  display: flex;
+  padding: calc(var(--padding-factor) * 1);
+  border-radius: var(--border-radius);
+  border: 3px solid var(--p-gray-300);
+  align-items: center;
+
+  &.selected {
+    border: 3px solid var(--p-gray-400);
+    background-color: var(--p-gray-100);
+  }
+
+  .fields {
+    display: flex;
+    flex-grow: 1;
+    gap: var(--gap-factor);
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: calc(var(--gap-factor) * 0.5);
+      flex-basis: 50%;
+    }
+  }
+
+  .actions {
+    display: flex;
+    gap: var(--gap-factor);
+  }
+}

@@ -1,0 +1,38 @@
+<div class="binary-editor-container">
+  <table class="binary-editor">
+    <thead>
+    <tr>
+      <th>Address</th>
+      <th class="hex-value-header">00</th>
+      <th class="hex-value-header">01</th>
+      <th class="hex-value-header">02</th>
+      <th class="hex-value-header">03</th>
+      <th class="hex-value-header">04</th>
+      <th class="hex-value-header">05</th>
+      <th class="hex-value-header">06</th>
+      <th class="hex-value-header">07</th>
+      <th class="hex-value-header">08</th>
+      <th class="hex-value-header">09</th>
+      <th class="hex-value-header">0A</th>
+      <th class="hex-value-header">0B</th>
+      <th class="hex-value-header">0C</th>
+      <th class="hex-value-header">0D</th>
+      <th class="hex-value-header">0E</th>
+      <th class="hex-value-header">0F</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (row of binaryRows; track row.offset) {
+        <tr>
+          <td class="address">{{ row.label }}</td>
+          @for (cell of row.cells; track cell.offset) {
+            <td class="hex-value" [ngClass]="{'null-value': cell.isNull, 'cell-in-range': isCellInRange(cell)}">{{ cell.label }}</td>
+          }
+          @for (cell of row.cells; track cell.offset) {
+            <td class="ascii-value" [ngClass]="{'null-value': cell.isNull}">{{ cell.ascii }}</td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

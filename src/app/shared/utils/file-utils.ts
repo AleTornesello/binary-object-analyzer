@@ -2,8 +2,8 @@ export class FileUtils {
   public static getArrayBuffer(file: File): Promise<ArrayBuffer> {
     const reader = new FileReader();
     return new Promise((resolve, reject) => {
-      let blob = new Blob([file]);
-      reader.readAsArrayBuffer(blob);
+      // let blob = new Blob([file]);
+      reader.readAsArrayBuffer(file as Blob);
       reader.onload = () => {
         let result = reader.result as ArrayBuffer;
         if (result) {

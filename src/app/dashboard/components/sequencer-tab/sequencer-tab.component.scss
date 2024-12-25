@@ -1,0 +1,15 @@
+.sequencer-tab {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap-factor);
+
+  .sequences-list-container {
+    flex-basis: 50%;
+  }
+
+  .sequences-preview-container {
+    flex-basis: 50%;
+    max-height: 80vh;
+    overflow: auto;
+  }
+}

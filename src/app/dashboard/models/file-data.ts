@@ -3,9 +3,9 @@ export class FileData {
   size: number;
   type: string;
   extension: string;
-  data: Int8Array;
+  data: Uint8Array;
 
-  constructor(name: string, size: number, type: string, extension: string, data: Int8Array) {
+  constructor(name: string, size: number, type: string, extension: string, data: Uint8Array) {
     this.name = name;
     this.size = size;
     this.type = type;
@@ -14,7 +14,7 @@ export class FileData {
   }
 
   static fromArrayBuffer(file: File, arrayBuffer: ArrayBuffer): FileData {
-    const typedArray = new Int8Array(arrayBuffer);
+    const typedArray = new Uint8Array(arrayBuffer);
 
     return new FileData(
       file.name,

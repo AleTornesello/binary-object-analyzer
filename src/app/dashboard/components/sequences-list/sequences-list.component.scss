@@ -1,0 +1,21 @@
+.sequences-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-factor);
+
+  .add-sequence {
+    width: 100%;
+    background-color: var(--p-green-200);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    padding: calc(var(--padding-factor) * 2);
+    display: flex;
+    align-items: center;
+    gap: var(--gap-factor);
+    justify-content: center;
+
+    span {
+      font-weight: bold;
+    }
+  }
+}

@@ -1,0 +1,12 @@
+<div class="sequencer-tab">
+  <div class="sequences-list-container">
+    <app-sequences-list [(sequences)]="sequences" (onSelect)="onSequenceSelect($event)"
+                        (sequencesChange)="onSequencesListChange($event)"></app-sequences-list>
+  </div>
+  <div class="sequences-preview-container">
+    <h1>Preview sequence start</h1>
+    <app-binary-editor [fileData]="fileData"
+                       [originalOffset]="selectedSequence.offset" [enablePaging]="true"
+                       [pageSize]="10"></app-binary-editor>
+  </div>
+</div>

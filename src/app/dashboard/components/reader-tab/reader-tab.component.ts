@@ -2,7 +2,7 @@ import {Component, EventEmitter, Output} from '@angular/core';
 import {FilePondModule} from 'ngx-filepond';
 import {FilePond, FilePondFile, FilePondOptions} from 'filepond';
 import {Button} from 'primeng/button';
-import {FileData} from '../../models/file';
+import {FileData} from '../../models/file-data';
 import {FileUtils} from '../../../shared/utils/file-utils';
 
 @Component({

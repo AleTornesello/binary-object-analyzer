@@ -7,6 +7,7 @@ import {NgClass} from '@angular/common';
 import {Button} from 'primeng/button';
 import {Inplace} from "primeng/inplace";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {HexlifyPipe} from '../../../shared/pipes/hexlify.pipe';
 
 @Component({
   selector: 'app-sequences-list-item',
@@ -17,7 +18,8 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
     NgClass,
     Button,
     Inplace,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HexlifyPipe
   ],
   templateUrl: './sequences-list-item.component.html',
   styleUrl: './sequences-list-item.component.scss',
@@ -56,7 +58,7 @@ export class SequencesListItemComponent {
   private _initForm(sequence?: Sequence) {
     const form = new FormGroup({
       name: new FormControl(sequence?.name),
-      offset: new FormControl(sequence?.offset)
+      offset: new FormControl(sequence?.offset.toString(16))
     });
 
     form.valueChanges
@@ -81,9 +83,25 @@ export class SequencesListItemComponent {
   }
 
   private _emitSequenceChange() {
+    let offset = this.form.get("offset")!.value;
+
+    if (typeof offset === "string") {
+      offset = parseInt(this.form.get("offset")!.value, 16);
+    }
+
     this.sequenceChange.emit({
-      offset: this.form.get("offset")!.value,
+      offset,
       name: this.form.get("name")!.value
     });
+  }
+
+  public onBeforeOffsetInput(event: InputEvent) {
+    if (!event.data) {
+      return;
+    }
+    // If the input character is not a hex digit, prevent the input
+    if (!event.data.match(/^[0-9a-fA-F]+$/)) {
+      event.preventDefault();
+    }
   }
 }

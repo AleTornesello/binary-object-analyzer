@@ -2,7 +2,6 @@
   @for (sequence of sequences; track $index) {
     <app-sequences-list-item [sequence]="sequence" [id]="$index"
                              [selected]="$index === selectedSequenceIndex"
-                             (onSelect)="onSequenceListItemSelect($event)"
                              (sequenceChange)="onSequenceChange($index, $event)"></app-sequences-list-item>
   }
   <div class="add-sequence" (click)="onAddSequenceClick()">

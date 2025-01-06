@@ -40,7 +40,6 @@ export class SequencesListItemComponent {
   @Input() selected: boolean;
 
   @Output() sequenceChange: EventEmitter<Sequence>;
-  @Output() onSelect: EventEmitter<number>;
 
   protected form: FormGroup;
 
@@ -51,7 +50,6 @@ export class SequencesListItemComponent {
   ) {
     this.selected = false;
     this.sequenceChange = new EventEmitter<Sequence>();
-    this.onSelect = new EventEmitter<number>();
     this.form = new FormGroup({});
   }
 
@@ -68,10 +66,6 @@ export class SequencesListItemComponent {
       });
 
     return form;
-  }
-
-  public onSelectSequenceClick() {
-    this.onSelect.emit(this.id);
   }
 
   public onConfirmNameChange() {

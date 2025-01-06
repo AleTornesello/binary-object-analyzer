@@ -1,38 +1,46 @@
-<div class="binary-editor-container">
-  <table class="binary-editor">
-    <thead>
-    <tr>
-      <th>Address</th>
-      <th class="hex-value-header">00</th>
-      <th class="hex-value-header">01</th>
-      <th class="hex-value-header">02</th>
-      <th class="hex-value-header">03</th>
-      <th class="hex-value-header">04</th>
-      <th class="hex-value-header">05</th>
-      <th class="hex-value-header">06</th>
-      <th class="hex-value-header">07</th>
-      <th class="hex-value-header">08</th>
-      <th class="hex-value-header">09</th>
-      <th class="hex-value-header">0A</th>
-      <th class="hex-value-header">0B</th>
-      <th class="hex-value-header">0C</th>
-      <th class="hex-value-header">0D</th>
-      <th class="hex-value-header">0E</th>
-      <th class="hex-value-header">0F</th>
-    </tr>
-    </thead>
-    <tbody>
-      @for (row of binaryRows; track row.offset) {
-        <tr>
-          <td class="address">{{ row.label }}</td>
-          @for (cell of row.cells; track cell.offset) {
-            <td class="hex-value" [ngClass]="{'null-value': cell.isNull, 'cell-in-range': isCellInRange(cell)}">{{ cell.label }}</td>
-          }
-          @for (cell of row.cells; track cell.offset) {
-            <td class="ascii-value" [ngClass]="{'null-value': cell.isNull}">{{ cell.ascii }}</td>
-          }
-        </tr>
+<div class="binary-editor-container"
+     [style.max-height]="maxHeight !== null ? maxHeight + 'px' : null">
+  <div class="binary-editor" [style.max-height]="maxHeight !== null ? maxHeight + 'px' : null">
+    <div class="binary-editor-offsets">
+      <div class="cell header">Address</div>
+      @for (offset of offsets; track offset) {
+        <div class="cell">{{ offset | hexlify:true }}</div>
       }
-    </tbody>
-  </table>
+    </div>
+    <div class="binary-editor-data">
+      <span class="cell header">00</span>
+      <span class="cell header">01</span>
+      <span class="cell header">02</span>
+      <span class="cell header">03</span>
+      <span class="cell header">04</span>
+      <span class="cell header">05</span>
+      <span class="cell header">06</span>
+      <span class="cell header">07</span>
+      <span class="cell header">08</span>
+      <span class="cell header">09</span>
+      <span class="cell header">0A</span>
+      <span class="cell header">0B</span>
+      <span class="cell header">0C</span>
+      <span class="cell header">0D</span>
+      <span class="cell header">0E</span>
+      <span class="cell header break-line">0F</span>
+      @for (cell of binaryCells; let i = $index; track i; ) {
+        <span class="cell" [attr.data-offset]="i + paddedOffset"
+              [ngClass]="{'break-line': i % 16 === 15, 'is-null': cell === 0}"
+        >{{ cell | hexlify:false:2 }}</span>
+      }
+    </div>
+    <div class="binary-editor-ascii">
+      <span class="cell break-line shrink"></span>
+            @for (cell of binaryCells; let i = $index; track i) {
+              <span class="cell shrink"
+                    [ngClass]="{'break-line': i % 16 === 15, 'is-null': cell === 0}"
+              >{{ cell | ascii }}</span>
+            }
+    </div>
+    <div class="binary-editor-scrollbar" [style.max-height]="maxHeight !== null ? (maxHeight - 20) + 'px' : null"
+         (scroll)="onScrollbarScroll($event)">
+      <div class="binary-editor-scrollbar__spacer" [style.height]="editorScrollbarHeight + 'px'"></div>
+    </div>
+  </div>
 </div>

@@ -14,21 +14,28 @@ import {ScrollNearEndDirective} from "../../../shared/directives/scroll-near-end
   ],
   templateUrl: './sequencer-tab.component.html',
   styleUrl: './sequencer-tab.component.scss',
-  standalone: true
+  standalone: true,
 })
 export class SequencerTabComponent {
   @ViewChild('binaryEditor') binaryEditor?: BinaryEditorComponent;
 
-  @Input({required: true}) fileData!: FileData;
+  @Input({required: true}) set fileData(fileData: FileData | null) {
+    this._fileData = fileData;
+  }
+  get fileData() {
+    return this._fileData;
+  }
 
   @Output() onSequencesChange: EventEmitter<Sequence[]>;
 
   protected sequences: Sequence[];
 
   private _selectedSequenceIndex: number;
+  private _fileData: FileData | null
 
   constructor() {
     this.onSequencesChange = new EventEmitter();
+    this._fileData = null;
 
     this.sequences = [
       new Sequence(0, "file")

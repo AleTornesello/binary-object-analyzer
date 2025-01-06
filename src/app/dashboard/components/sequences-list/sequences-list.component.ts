@@ -15,7 +15,6 @@ export class SequencesListComponent {
   @Input() sequences: Sequence[];
 
   @Output() sequencesChange: EventEmitter<Sequence[]>;
-  @Output() onSelect: EventEmitter<number>;
 
   protected selectedSequenceIndex: number;
 
@@ -25,12 +24,6 @@ export class SequencesListComponent {
     ];
     this.selectedSequenceIndex = 0;
     this.sequencesChange = new EventEmitter<Sequence[]>();
-    this.onSelect = new EventEmitter<number>();
-  }
-
-  public onSequenceListItemSelect(index: number) {
-    this.selectedSequenceIndex = index;
-    this.onSelect.emit(index);
   }
 
   public onAddSequenceClick() {

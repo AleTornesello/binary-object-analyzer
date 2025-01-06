@@ -9,7 +9,7 @@
 
   .sequences-preview-container {
     flex-basis: 50%;
-    max-height: 80vh;
     overflow: auto;
+    overflow: hidden;
   }
 }

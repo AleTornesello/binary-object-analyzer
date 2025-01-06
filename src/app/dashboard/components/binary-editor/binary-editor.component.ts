@@ -1,148 +1,148 @@
-import {Component, Input} from '@angular/core';
+import {Component, ElementRef, Input} from '@angular/core';
 import {FileData} from '../../models/file-data';
 import {CommonModule} from '@angular/common';
+import {HexlifyPipe} from "../../../shared/pipes/hexlify.pipe";
+import {AsciiPipe} from "../../../shared/pipes/ascii.pipe";
 
-class BinaryRow {
+export class BinaryEditorMeta {
   offset: number;
-  cells: BinaryCell[];
+  length: number;
+  color?: string;
+  label?: string;
 
-  get label() {
-    return `0x${this.offset.toString(16).padStart(8, '0')}`;
-  }
-
-  constructor(offset: number, cells: BinaryCell[]) {
+  constructor(offset: number, length: number, color?: string, label?: string) {
     this.offset = offset;
-    this.cells = cells;
-  }
-}
-
-class BinaryCell {
-  value: number;
-  offset: number;
-
-  get label() {
-    return this.value.toString(16).padStart(2, '0');
-  }
-
-  get ascii() {
-    if (this.value < 32 || this.value > 126) {
-      return '.';
-    }
-    return String.fromCharCode(this.value);
-  }
-
-  get isNull() {
-    return this.value === 0;
-  }
-
-  constructor(value: number, offset: number) {
-    this.value = value;
-    this.offset = offset;
+    this.length = length;
+    this.color = color;
+    this.label = label;
   }
 }
 
 @Component({
   selector: 'app-binary-editor',
-  imports: [CommonModule],
+  imports: [CommonModule, HexlifyPipe, AsciiPipe],
   templateUrl: './binary-editor.component.html',
   styleUrl: './binary-editor.component.scss',
-  standalone: true
+  standalone: true,
 })
 export class BinaryEditorComponent {
+
   @Input() set fileData(fileData: FileData | null) {
     this._fileData = fileData;
-    this.resetPaging();
-    this._initializeBinaryRows();
+    this._updateLocalScrollVariables();
   }
+
   @Input() set originalOffset(offset: number) {
     this._originalOffset = offset;
     this.calculatePaddedOffset();
-    this.resetPaging();
-    this._initializeBinaryRows();
+    this._updateLocalScrollVariables();
   }
-  @Input() enablePaging: boolean;
-  @Input() pageSize: number;
 
-  protected binaryRows: BinaryRow[];
+  @Input() set metas(metas: BinaryEditorMeta[]) {
+    this._metas = metas;
+    // this._updateCellsMetas();
+  }
+
+  @Input() set maxHeight(maxHeight: number | null) {
+    this._maxHeight = maxHeight;
+    this._updateLocalScrollVariables();
+  }
+
+  get maxHeight() {
+    return this._maxHeight;
+  }
+
+  protected paddedOffset: number;
 
   private _fileData: FileData | null;
-  private _lastPage: number;
   private _originalOffset: number;
-  private _paddedOffset: number;
+  private _metas: BinaryEditorMeta[];
+  private _maxHeight: number | null;
+
+  // Local scroll variables
+  protected editorScrollbarHeight: number;
+  private _rowsToRender: number;
+  private _rowsStartOffset: number;
 
   constructor() {
     this._fileData = null;
     this._originalOffset = 0;
-    this._paddedOffset = 0;
-    this.enablePaging = false;
-    this.pageSize = 50;
-    this.binaryRows = [];
-    this._lastPage = 0;
-    this._initializeBinaryRows();
+    this.paddedOffset = 0;
+    this._metas = [];
+    this.editorScrollbarHeight = 0;
+    this._rowsToRender = 0;
+    this._rowsStartOffset = 0;
+    this._maxHeight = null;
   }
 
-  private _initializeBinaryRows()  {
+  get binaryCells(): Uint8Array {
     if (!this._fileData) {
-      this.binaryRows = [
-        new BinaryRow(this._paddedOffset, [])
-      ];
-      return;
+      return new Uint8Array(0);
     }
 
-    this._loadNextPage();
-  }
-
-  private _loadNextPage() {
-    if(!this._fileData) {
-      return;
-    }
-
-    if(this._lastPage * this.pageSize >= this._fileData.data.length) {
-      return;
-    }
-
-    this._lastPage++;
-
-    let start = (this._lastPage - 1) * this.pageSize;
-
-    let end = start + this.pageSize;
-
-    if(!this.enablePaging) {
-      end = this._fileData.data.length;
-    }
-
-    const rows = new Array<BinaryRow>(end - start);
-    for (let i = start; i < end; i++) {
-      const offset = this._paddedOffset + (i * 16);
-      const cells = new Array<BinaryCell>(16);
-      for (let j = 0; j < 16; j++) {
-        const value = this._fileData.data[offset + j];
-        cells[j] = new BinaryCell(value, offset + j);
-      }
-      rows[i - start] = new BinaryRow(offset, cells);
-    }
-    this.binaryRows = this.binaryRows.concat(rows);
-  }
-
-  public loadMore() {
-    this._loadNextPage();
-  }
-
-  public resetPaging() {
-    this._lastPage = 0;
-    this.binaryRows = [];
+    const startRowOffset = this._rowsStartOffset + this.paddedOffset;
+    // Convert rows to elements count (16 elements per row)
+    const length = this._rowsToRender * 16;
+    return this._fileData.data.slice(startRowOffset, startRowOffset + length);
   }
 
   // If the original offset is not a multiple of 16,
   // add padding to the left
   public calculatePaddedOffset() {
-    this._paddedOffset = this._originalOffset;
+    this.paddedOffset = this._originalOffset;
     if (this._originalOffset % 16 !== 0) {
-      this._paddedOffset -= this._originalOffset % 16;
+      this.paddedOffset -= this._originalOffset % 16;
     }
   }
 
-  public isCellInRange(cell: BinaryCell) {
-    return cell.offset >= this._originalOffset;
+  public get offsets() {
+    const startRowOffset = this._rowsStartOffset + this.paddedOffset;
+    let length = this._rowsToRender;
+
+    // If the end address is over the file data possible addresses, because
+    // of a possible end padding of the editor, reduce the length
+    if (this._fileData && (startRowOffset / 16) + length > Math.ceil(this._fileData.data.length / 16)) {
+      length--;
+    }
+
+    return new Array(length).fill(null).map((_, i) => (i * 16) + startRowOffset);
+  }
+
+  public onScrollbarScroll(e: Event) {
+
+    // Get scrollbar position
+    const scrollbarPosition = (e.target as HTMLDivElement).scrollTop;
+
+    // Calculate start row offset
+    const startRowOffset = Math.floor(scrollbarPosition / 20) * 16;
+
+    console.log("scrollbarPosition", scrollbarPosition, "startRowOffset", startRowOffset);
+
+    this._rowsStartOffset = startRowOffset;
+  }
+
+  private _updateLocalScrollVariables() {
+    if (!this._fileData) {
+      return;
+    }
+
+    const allElementsCount = this._fileData.data.length;
+    // Remove items that are before the start offset
+    const availableElementsCount = allElementsCount - this.paddedOffset;
+
+    // Convert elements to rows
+    const availableRowsCount = Math.ceil(availableElementsCount / 16);
+
+    // Multiply rows by 20px (height of a row)
+    this.editorScrollbarHeight = availableRowsCount * 20;
+
+    if (this.maxHeight !== null && (this.maxHeight % 20) !== 0) {
+      this.editorScrollbarHeight += 20 - (this.maxHeight % 20);
+    }
+
+    // Subtract 20px of the header
+    const editorHeight = Math.min(availableRowsCount * 20, this._maxHeight ?? Infinity) - 20;
+
+    this._rowsToRender = Math.ceil(editorHeight / 20);
   }
 }

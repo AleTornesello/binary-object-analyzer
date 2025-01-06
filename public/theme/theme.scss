@@ -13,3 +13,19 @@ body {
   width: 100vw;
   height: 100vh;
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 6px;
+  background-color: var(--p-gray-200);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--p-gray-500);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--p-gray-600);
+}

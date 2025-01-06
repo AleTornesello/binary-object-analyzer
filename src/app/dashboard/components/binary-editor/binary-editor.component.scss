@@ -1,36 +1,55 @@
 .binary-editor-container {
+  height: 100%;
+  //overflow: auto;
+
   .binary-editor {
-    border-collapse: collapse;
+    display: flex;
     font: normal 16px "Consolas", monospace;
+    height: 100%;
 
-    //  Set first column alignment to left
-    th:first-child,
-    td:first-child {
-      text-align: left;
-      padding-right: calc(var(--padding-factor) * 2);
+    .binary-editor-offsets {
+      width: fit-content;
     }
 
-    th.hex-value-header, td.hex-value {
-      padding-left: calc(var(--padding-factor) * 0.5);
-      padding-right: calc(var(--padding-factor) * 0.5);
-      text-align: center;
+    .binary-editor-ascii {
+      margin-left: calc(var(--padding-factor) * 1);
+      flex-grow: 1;
     }
 
-    td.null-value {
-      color: var(--p-gray-400);
+    .binary-editor-scrollbar {
+      overflow: auto;
+      height: 100%;
+      margin-top: 20px;
+
+      //To show the scroll bar
+      width: 10px;
+
+      &__spacer {
+        width: 1px;
+      }
     }
 
-    td.cell-in-range {
-      background-color: var(--p-green-200);
+    .cell {
+      padding: 0 calc(var(--padding-factor) * 0.5);
+      line-height: 20px;
 
-      &:first-child {
-        border-top-left-radius: var(--border-radius);
-        border-bottom-left-radius: var(--border-radius);
+      &.header {
+        font-weight: bold;
       }
 
-      &:last-child {
-        border-top-right-radius: var(--border-radius);
-        border-bottom-right-radius: var(--border-radius);
+      &.break-line {
+        &::after {
+          content: "\A";
+          white-space: pre;
+        }
+      }
+
+      &.is-null {
+        color: var(--p-gray-400);
+      }
+
+      &.shrink {
+        padding: 0 !important;
       }
     }
   }

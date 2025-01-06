@@ -6,8 +6,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class AsciiPipe implements PipeTransform {
 
-  transform(value: number, fallback: string = "."): unknown {
-    if (value < 32 || value > 126) {
+  transform(value: number, fallback: string = "."): string {
+    if (value < 33 || value > 126) {
       return fallback;
     }
     return String.fromCharCode(value);

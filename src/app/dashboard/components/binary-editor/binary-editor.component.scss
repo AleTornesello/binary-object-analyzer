@@ -9,6 +9,7 @@
 
     .binary-editor-addresses {
       width: fit-content;
+      margin-right: var(--padding-factor);
     }
 
     .binary-editor-ascii {
@@ -62,6 +63,13 @@
         z-index: 1;
         left: 30px;
         top: 19px;
+        display: flex;
+        gap: calc(var(--gap-factor) * 0.5);
+
+        .tooltip-color {
+          width: 8px;
+          border-radius: var(--border-radius);
+        }
       }
 
       &:hover .tooltip {

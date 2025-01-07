@@ -30,9 +30,16 @@
               [ngClass]="{'break-line': i % 16 === 15, 'is-null': cell === 0}"
               [style.background-color]="visibleMetas[i] && visibleMetas[i]!.color ? visibleMetas[i]!.color : null"
         >
-          {{ cell | hexlify:false:2 }}
-          @if(visibleMetas[i] && visibleMetas[i]!.label) {
-            <span class="tooltip">{{ visibleMetas[i]!.label }}</span>
+          <span>{{ cell | hexlify:false:2 }}</span>
+          @if (visibleMetas[i] && visibleMetas[i]!.label) {
+            <span class="tooltip">
+              @if (visibleMetas[i] && visibleMetas[i]!.color) {
+                <span class="tooltip-color"
+                      [style.background-color]="visibleMetas[i]!.color"
+                ></span>
+              }
+              <span>{{ visibleMetas[i]!.label }}</span>
+            </span>
           }
         </span>
       }

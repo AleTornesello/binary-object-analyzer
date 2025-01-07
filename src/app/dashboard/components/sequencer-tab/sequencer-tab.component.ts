@@ -1,7 +1,7 @@
-import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {SequencesListComponent} from '../sequences-list/sequences-list.component';
 import {Sequence} from '../../models/sequence';
-import {BinaryEditorComponent} from '../binary-editor/binary-editor.component';
+import {BinaryEditorComponent, BinaryEditorMeta} from '../binary-editor/binary-editor.component';
 import {FileData} from '../../models/file-data';
 import {ScrollNearEndDirective} from "../../../shared/directives/scroll-near-end.directive";
 
@@ -17,11 +17,11 @@ import {ScrollNearEndDirective} from "../../../shared/directives/scroll-near-end
   standalone: true,
 })
 export class SequencerTabComponent {
-  @ViewChild('binaryEditor') binaryEditor?: BinaryEditorComponent;
-
   @Input({required: true}) set fileData(fileData: FileData | null) {
     this._fileData = fileData;
+    this._generateBinaryEditorMeta();
   }
+
   get fileData() {
     return this._fileData;
   }
@@ -29,9 +29,21 @@ export class SequencerTabComponent {
   @Output() onSequencesChange: EventEmitter<Sequence[]>;
 
   protected sequences: Sequence[];
+  protected metas: (BinaryEditorMeta | null)[];
 
-  private _selectedSequenceIndex: number;
-  private _fileData: FileData | null
+  private _fileData: FileData | null;
+
+  private readonly _metaColors: string[] = [
+    "#5295C3",
+    "#F89843",
+    "#5CB35C",
+    "#D95556",
+    "#AA89C9",
+    "#A17970",
+    "#E695CD",
+    "#C6C652",
+    "#4CCAD7"
+  ];
 
   constructor() {
     this.onSequencesChange = new EventEmitter();
@@ -40,19 +52,37 @@ export class SequencerTabComponent {
     this.sequences = [
       new Sequence(0, "file")
     ];
-    this._selectedSequenceIndex = 0;
-  }
 
-  public onSequenceSelect(index: number) {
-    this._selectedSequenceIndex = index;
-  }
-
-  public get selectedSequence() {
-    return this.sequences[this._selectedSequenceIndex];
+    this.metas = [];
+    this._generateBinaryEditorMeta();
   }
 
   public onSequencesListChange(sequences: Sequence[]) {
     this.sequences = sequences;
     this.onSequencesChange.emit(this.sequences);
+    this._generateBinaryEditorMeta();
+  }
+
+  private _generateBinaryEditorMeta() {
+    this.metas = [];
+
+    if (!this._fileData) {
+      return;
+    }
+
+    const edges = this.sequences.sort((a, b) => a.address - b.address);
+
+    // Add metas before first edge
+    for (let i = 0; i < edges[0].address; i++) {
+      this.metas.push(null);
+    }
+
+    for (let i = 0; i < edges.length; i++) {
+      const end = i < edges.length - 1 ? edges[i + 1].address : this._fileData.data.length;
+      for (let j = edges[i].address; j < end; j++) {
+        const color = this._metaColors[i % this._metaColors.length];
+        this.metas.push(new BinaryEditorMeta(edges[i].address, color, edges[i].name));
+      }
+    }
   }
 }

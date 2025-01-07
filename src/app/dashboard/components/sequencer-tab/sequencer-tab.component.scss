@@ -5,11 +5,18 @@
 
   .sequences-list-container {
     flex-basis: 50%;
+
+    .sequences-list-actions {
+      display: flex;
+      gap: var(--gap-factor);
+      align-items: center;
+      justify-content: flex-end;
+      margin-bottom: calc(var(--padding-factor) * 1);
+    }
   }
 
   .sequences-preview-container {
     flex-basis: 50%;
-    overflow: auto;
     overflow: hidden;
   }
 }

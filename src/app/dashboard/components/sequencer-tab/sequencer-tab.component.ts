@@ -4,13 +4,15 @@ import {Sequence} from '../../models/sequence';
 import {BinaryEditorComponent, BinaryEditorMeta} from '../binary-editor/binary-editor.component';
 import {FileData} from '../../models/file-data';
 import {ScrollNearEndDirective} from "../../../shared/directives/scroll-near-end.directive";
+import {Button} from 'primeng/button';
 
 @Component({
   selector: 'app-sequencer-tab',
   imports: [
     SequencesListComponent,
     BinaryEditorComponent,
-    ScrollNearEndDirective
+    ScrollNearEndDirective,
+    Button
   ],
   templateUrl: './sequencer-tab.component.html',
   styleUrl: './sequencer-tab.component.scss',
@@ -91,5 +93,35 @@ export class SequencerTabComponent {
         this.metas.push(new BinaryEditorMeta(edges[i].address, edges[i].color, edges[i].name));
       }
     }
+  }
+
+  public onExportSequencesClick() {
+    const json = JSON.stringify(this.sequences, null, 2);
+    const blob = new Blob([json], {type: 'application/json'});
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'sequences.json';
+    link.click();
+    window.URL.revokeObjectURL(url);
+  }
+
+  public onImportSequencesClick() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'application/json';
+    input.click();
+    input.addEventListener('change', (event) => {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const text = reader.result as string;
+          const sequences = JSON.parse(text) as Sequence[];
+          this.onSequencesListChange(sequences);
+        };
+        reader.readAsText(file);
+      }
+    });
   }
 }

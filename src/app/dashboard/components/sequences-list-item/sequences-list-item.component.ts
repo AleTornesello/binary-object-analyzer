@@ -37,7 +37,6 @@ export class SequencesListItemComponent {
   }
 
   @Input({required: true}) id!: number;
-  @Input() selected: boolean;
 
   @Output() sequenceChange: EventEmitter<Sequence>;
 
@@ -48,7 +47,6 @@ export class SequencesListItemComponent {
   constructor(
     private _destroyRef: DestroyRef
   ) {
-    this.selected = false;
     this.sequenceChange = new EventEmitter<Sequence>();
     this.form = new FormGroup({});
   }

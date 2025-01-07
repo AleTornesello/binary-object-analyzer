@@ -1,9 +1,8 @@
-import {afterRender, Component, Input} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {FileData} from '../../models/file-data';
 import {CommonModule} from '@angular/common';
 import {HexlifyPipe} from "../../../shared/pipes/hexlify.pipe";
 import {AsciiPipe} from "../../../shared/pipes/ascii.pipe";
-import tippy from 'tippy.js';
 
 export class BinaryEditorMeta {
   address: number;
@@ -75,14 +74,6 @@ export class BinaryEditorComponent {
     this._rowsToRender = 0;
     this._rowsStartAddress = 0;
     this._maxHeight = null;
-
-    afterRender(() => {
-      console.log("aaa")
-      tippy('[data-tippy-content]', {
-        duration: 0,
-        arrow: true,
-      });
-    })
   }
 
   get visibleBinaryCells(): Uint8Array {

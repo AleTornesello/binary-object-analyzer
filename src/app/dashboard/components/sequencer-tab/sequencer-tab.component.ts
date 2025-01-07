@@ -19,6 +19,7 @@ import {ScrollNearEndDirective} from "../../../shared/directives/scroll-near-end
 export class SequencerTabComponent {
   @Input({required: true}) set fileData(fileData: FileData | null) {
     this._fileData = fileData;
+    this._applyColorToSequences(this.sequences);
     this._generateBinaryEditorMeta();
   }
 
@@ -57,8 +58,15 @@ export class SequencerTabComponent {
     this._generateBinaryEditorMeta();
   }
 
+  private _applyColorToSequences(sequences: Sequence[]) {
+    sequences.forEach((sequence, index) => {
+      sequence.color = this._metaColors[index % this._metaColors.length];
+    });
+  }
+
   public onSequencesListChange(sequences: Sequence[]) {
     this.sequences = sequences;
+    this._applyColorToSequences(this.sequences);
     this.onSequencesChange.emit(this.sequences);
     this._generateBinaryEditorMeta();
   }
@@ -80,8 +88,7 @@ export class SequencerTabComponent {
     for (let i = 0; i < edges.length; i++) {
       const end = i < edges.length - 1 ? edges[i + 1].address : this._fileData.data.length;
       for (let j = edges[i].address; j < end; j++) {
-        const color = this._metaColors[i % this._metaColors.length];
-        this.metas.push(new BinaryEditorMeta(edges[i].address, color, edges[i].name));
+        this.metas.push(new BinaryEditorMeta(edges[i].address, edges[i].color, edges[i].name));
       }
     }
   }

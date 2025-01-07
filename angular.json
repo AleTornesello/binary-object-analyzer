@@ -33,7 +33,6 @@
             ],
             "styles": [
               "node_modules/filepond/dist/filepond.min.css",
-              "node_modules/tippy.js/dist/tippy.css",
               "public/theme/theme.scss",
               "src/styles.scss"
             ],

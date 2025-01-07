@@ -1,43 +1,46 @@
-<form [formGroup]="form">
-  <div class="sequences-list-item" [ngClass]="{'selected': selected}">
-    <div class="fields">
-      <div class="field">
-        <label class="label" [for]="'sequence-name-' + id">Sequence name</label>
-        <p-inplace>
-          <ng-template #display>
-            <span>{{ form.get("name")!.value }} (Click to edit)</span>
-          </ng-template>
-          <ng-template #content let-closeCallback="closeCallback">
-            <input [id]="'sequence-name-' + id" pInputText formControlName="name" autofocus
-                   (keydown.enter)="onConfirmNameChange(); closeCallback($event)"
-                   (blur)="onConfirmNameChange(); closeCallback($event)">
-          </ng-template>
-        </p-inplace>
+<div class="sequences-list-item">
+  <span class="list-item__color" [style.background-color]="sequence.color"></span>
+  <form [formGroup]="form">
+    <div class="list-item__data">
+      <div class="fields">
+        <div class="field">
+          <label class="label" [for]="'sequence-name-' + id">Sequence name</label>
+          <p-inplace>
+            <ng-template #display>
+              <span>{{ form.get("name")!.value }} (Click to edit)</span>
+            </ng-template>
+            <ng-template #content let-closeCallback="closeCallback">
+              <input [id]="'sequence-name-' + id" pInputText formControlName="name" autofocus
+                     (keydown.enter)="onConfirmNameChange(); closeCallback($event)"
+                     (blur)="onConfirmNameChange(); closeCallback($event)">
+            </ng-template>
+          </p-inplace>
+        </div>
+        <div class="field">
+          <label class="label" [for]="'sequence-address-' + id">Address</label>
+          <p-inplace>
+            <ng-template #display>
+              <span>{{ form.get("address")!.value | hexlify:true }} (Click to edit)</span>
+            </ng-template>
+            <ng-template #content let-closeCallback="closeCallback">
+              <input pInputText [id]="'sequence-address-' + id" formControlName="address"
+                     prefix="0x"
+                     (beforeinput)="onBeforeAddressInput($event)"
+                     (keydown.enter)="onConfirmAddressChange(); closeCallback($event)"
+                     (blur)="onConfirmAddressChange(); closeCallback($event)">
+            </ng-template>
+          </p-inplace>
+        </div>
       </div>
-      <div class="field">
-        <label class="label" [for]="'sequence-address-' + id">Address</label>
-        <p-inplace>
-          <ng-template #display>
-            <span>{{ form.get("address")!.value | hexlify:true }} (Click to edit)</span>
-          </ng-template>
-          <ng-template #content let-closeCallback="closeCallback">
-            <input pInputText [id]="'sequence-address-' + id" formControlName="address"
-                   prefix="0x"
-                   (beforeinput)="onBeforeAddressInput($event)"
-                   (keydown.enter)="onConfirmAddressChange(); closeCallback($event)"
-                   (blur)="onConfirmAddressChange(); closeCallback($event)">
-          </ng-template>
-        </p-inplace>
+      <div class="actions">
+        <p-button severity="danger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="20" height="20">
+            <path
+              d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"
+              fill="#ffffff"/>
+          </svg>
+        </p-button>
       </div>
     </div>
-    <div class="actions">
-      <p-button severity="danger">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="20" height="20">
-          <path
-            d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"
-            fill="#ffffff"/>
-        </svg>
-      </p-button>
-    </div>
-  </div>
-</form>
+  </form>
+</div>

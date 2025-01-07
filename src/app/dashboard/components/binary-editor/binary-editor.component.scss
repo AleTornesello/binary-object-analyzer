@@ -31,6 +31,7 @@
     .cell {
       padding: 0 calc(var(--padding-factor) * 0.5);
       line-height: inherit;
+      position: relative;
 
       &.header {
         font-weight: bold;
@@ -49,6 +50,22 @@
 
       &.shrink {
         padding: 0 !important;
+      }
+
+      .tooltip {
+        visibility: hidden;
+        background-color: var(--card-bg-color);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        border-radius: var(--border-radius);
+        padding: calc(var(--padding-factor) * 0.5) calc(var(--padding-factor) * 1);
+        position: absolute;
+        z-index: 1;
+        left: 30px;
+        top: 19px;
+      }
+
+      &:hover .tooltip {
+        visibility: visible;
       }
     }
   }

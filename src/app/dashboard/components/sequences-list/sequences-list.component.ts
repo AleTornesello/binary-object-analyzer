@@ -16,13 +16,10 @@ export class SequencesListComponent {
 
   @Output() sequencesChange: EventEmitter<Sequence[]>;
 
-  protected selectedSequenceIndex: number;
-
   constructor() {
     this.sequences = [
       new Sequence(0, "file")
     ];
-    this.selectedSequenceIndex = 0;
     this.sequencesChange = new EventEmitter<Sequence[]>();
   }
 

@@ -27,8 +27,8 @@ export class SequencesListComponent {
   }
 
   public onAddSequenceClick() {
-    const maxOffsetSequence = this.sequences.reduce((a, b) => a.offset > b.offset ? a : b);
-    this.sequences.push(new Sequence(maxOffsetSequence.offset + 1, "file"));
+    const maxAddressSequence = this.sequences.reduce((a, b) => a.address > b.address ? a : b);
+    this.sequences.push(new Sequence(maxAddressSequence.address + 1, "file"));
     this.sequencesChange.emit(this.sequences);
   }
 

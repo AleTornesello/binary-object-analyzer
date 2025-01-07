@@ -1,10 +1,11 @@
 <div class="binary-editor-container"
      [style.max-height]="maxHeight !== null ? maxHeight + 'px' : null">
-  <div class="binary-editor" [style.max-height]="maxHeight !== null ? maxHeight + 'px' : null">
-    <div class="binary-editor-offsets">
+  <div class="binary-editor" [style.max-height]="maxHeight !== null ? maxHeight + 'px' : null"
+       [style.line-height]="lineHeight + 'px'">
+    <div class="binary-editor-addresses">
       <div class="cell header">Address</div>
-      @for (offset of offsets; track offset) {
-        <div class="cell">{{ offset | hexlify:true }}</div>
+      @for (address of addresses; track address) {
+        <div class="cell">{{ address | hexlify:true }}</div>
       }
     </div>
     <div class="binary-editor-data">
@@ -24,21 +25,24 @@
       <span class="cell header">0D</span>
       <span class="cell header">0E</span>
       <span class="cell header break-line">0F</span>
-      @for (cell of binaryCells; let i = $index; track i; ) {
-        <span class="cell" [attr.data-offset]="i + paddedOffset"
+      @for (cell of visibleBinaryCells; let i = $index; track i; ) {
+        <span class="cell" [attr.data-address]="i + paddedAddress"
               [ngClass]="{'break-line': i % 16 === 15, 'is-null': cell === 0}"
+              [style.background-color]="visibleMetas[i] && visibleMetas[i]!.color ? visibleMetas[i]!.color : null"
         >{{ cell | hexlify:false:2 }}</span>
       }
     </div>
     <div class="binary-editor-ascii">
       <span class="cell break-line shrink"></span>
-            @for (cell of binaryCells; let i = $index; track i) {
-              <span class="cell shrink"
-                    [ngClass]="{'break-line': i % 16 === 15, 'is-null': cell === 0}"
-              >{{ cell | ascii }}</span>
-            }
+      @for (cell of visibleBinaryCells; let i = $index; track i) {
+        <span class="cell shrink" [attr.data-address]="i + paddedAddress"
+              [ngClass]="{'break-line': i % 16 === 15, 'is-null': cell === 0}"
+              [style.background-color]="visibleMetas[i] && visibleMetas[i]!.color ? visibleMetas[i]!.color : null"
+        >{{ cell | ascii }}</span>
+      }
     </div>
     <div class="binary-editor-scrollbar" [style.max-height]="maxHeight !== null ? (maxHeight - 20) + 'px' : null"
+         [style.margin-top]="lineHeight + 'px'"
          (scroll)="onScrollbarScroll($event)">
       <div class="binary-editor-scrollbar__spacer" [style.height]="editorScrollbarHeight + 'px'"></div>
     </div>

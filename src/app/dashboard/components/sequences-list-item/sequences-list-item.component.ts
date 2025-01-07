@@ -56,7 +56,7 @@ export class SequencesListItemComponent {
   private _initForm(sequence?: Sequence) {
     const form = new FormGroup({
       name: new FormControl(sequence?.name),
-      offset: new FormControl(sequence?.offset.toString(16))
+      address: new FormControl(sequence?.address.toString(16))
     });
 
     form.valueChanges
@@ -72,24 +72,24 @@ export class SequencesListItemComponent {
     this._emitSequenceChange();
   }
 
-  public onConfirmOffsetChange() {
+  public onConfirmAddressChange() {
     this._emitSequenceChange();
   }
 
   private _emitSequenceChange() {
-    let offset = this.form.get("offset")!.value;
+    let address = this.form.get("address")!.value;
 
-    if (typeof offset === "string") {
-      offset = parseInt(this.form.get("offset")!.value, 16);
+    if (typeof address === "string") {
+      address = parseInt(this.form.get("address")!.value, 16);
     }
 
     this.sequenceChange.emit({
-      offset,
+      address,
       name: this.form.get("name")!.value
     });
   }
 
-  public onBeforeOffsetInput(event: InputEvent) {
+  public onBeforeAddressInput(event: InputEvent) {
     if (!event.data) {
       return;
     }

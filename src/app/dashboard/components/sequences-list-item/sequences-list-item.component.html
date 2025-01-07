@@ -15,17 +15,17 @@
         </p-inplace>
       </div>
       <div class="field">
-        <label class="label" [for]="'sequence-offset-' + id">Offset</label>
+        <label class="label" [for]="'sequence-address-' + id">Address</label>
         <p-inplace>
           <ng-template #display>
-            <span>{{ form.get("offset")!.value | hexlify:true }} (Click to edit)</span>
+            <span>{{ form.get("address")!.value | hexlify:true }} (Click to edit)</span>
           </ng-template>
           <ng-template #content let-closeCallback="closeCallback">
-            <input pInputText [id]="'sequence-offset-' + id" formControlName="offset"
+            <input pInputText [id]="'sequence-address-' + id" formControlName="address"
                    prefix="0x"
-                   (beforeinput)="onBeforeOffsetInput($event)"
-                   (keydown.enter)="onConfirmOffsetChange(); closeCallback($event)"
-                   (blur)="onConfirmOffsetChange(); closeCallback($event)">
+                   (beforeinput)="onBeforeAddressInput($event)"
+                   (keydown.enter)="onConfirmAddressChange(); closeCallback($event)"
+                   (blur)="onConfirmAddressChange(); closeCallback($event)">
           </ng-template>
         </p-inplace>
       </div>

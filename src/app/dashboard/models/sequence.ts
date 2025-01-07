@@ -1,9 +1,9 @@
 export class Sequence {
-  public offset: number;
+  public address: number;
   public name: string;
 
-  constructor(offset: number, name: string) {
-    this.offset = offset;
+  constructor(address: number, name: string) {
+    this.address = address;
     this.name = name;
   }
 }

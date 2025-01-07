@@ -4,6 +4,7 @@ import {FilePond, FilePondFile, FilePondOptions} from 'filepond';
 import {Button} from 'primeng/button';
 import {FileData} from '../../models/file-data';
 import {FileUtils} from '../../../shared/utils/file-utils';
+import {MessageService} from 'primeng/api';
 
 @Component({
   selector: 'app-reader-tab',
@@ -20,7 +21,9 @@ export class ReaderTabComponent {
 
   private _fileData: FileData | null;
 
-  constructor() {
+  constructor(
+    private _messageService: MessageService
+  ) {
     this.pondOptions = {
       allowMultiple: false,
       labelIdle: 'Drop files here...'
@@ -46,6 +49,7 @@ export class ReaderTabComponent {
 
   public onLoadClick() {
     if (this._fileData) {
+      this._messageService.add({severity: 'success', summary: 'Success', detail: 'File loaded successfully'});
       this.onLoadFileData.emit(this._fileData);
     }
   }

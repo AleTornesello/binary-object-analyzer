@@ -33,4 +33,9 @@ export class SequencesListComponent {
     this.sequences[index] = sequence;
     this.sequencesChange.emit(this.sequences);
   }
+
+  public onSequenceDelete(index: number) {
+    this.sequences.splice(index, 1);
+    this.sequencesChange.emit(this.sequences);
+  }
 }

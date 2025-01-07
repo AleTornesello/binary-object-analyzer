@@ -37,8 +37,10 @@ export class SequencesListItemComponent {
   }
 
   @Input({required: true}) id!: number;
+  @Input() hideDeleteButton: boolean;
 
   @Output() sequenceChange: EventEmitter<Sequence>;
+  @Output() deleteSequence: EventEmitter<void>;
 
   protected form: FormGroup;
 
@@ -47,8 +49,10 @@ export class SequencesListItemComponent {
   constructor(
     private _destroyRef: DestroyRef
   ) {
-    this.sequenceChange = new EventEmitter<Sequence>();
-    this.form = new FormGroup({});
+    this.sequenceChange = new EventEmitter();
+    this.deleteSequence = new EventEmitter();
+    this.form = this._initForm();
+    this.hideDeleteButton = false;
   }
 
   private _initForm(sequence?: Sequence) {
@@ -95,5 +99,9 @@ export class SequencesListItemComponent {
     if (!event.data.match(/^[0-9a-fA-F]+$/)) {
       event.preventDefault();
     }
+  }
+
+  public onDeleteClick() {
+    this.deleteSequence.emit();
   }
 }

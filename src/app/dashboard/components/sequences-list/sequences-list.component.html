@@ -1,7 +1,8 @@
 <div class="sequences-list">
   @for (sequence of sequences; track $index) {
-    <app-sequences-list-item [sequence]="sequence" [id]="$index"
-                             (sequenceChange)="onSequenceChange($index, $event)"></app-sequences-list-item>
+    <app-sequences-list-item [sequence]="sequence" [id]="$index" [hideDeleteButton]="sequences.length === 1"
+                             (sequenceChange)="onSequenceChange($index, $event)"
+                             (deleteSequence)="onSequenceDelete($index)"></app-sequences-list-item>
   }
   <div class="add-sequence" (click)="onAddSequenceClick()">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="20" height="20">

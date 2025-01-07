@@ -29,6 +29,7 @@
         <span class="cell" [attr.data-address]="i + paddedAddress"
               [ngClass]="{'break-line': i % 16 === 15, 'is-null': cell === 0}"
               [style.background-color]="visibleMetas[i] && visibleMetas[i]!.color ? visibleMetas[i]!.color : null"
+              [attr.data-tippy-content]="visibleMetas[i] && visibleMetas[i]!.label ? visibleMetas[i]!.label : null"
         >{{ cell | hexlify:false:2 }}</span>
       }
     </div>

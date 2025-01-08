@@ -1,0 +1,7 @@
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--gap-factor);
+  margin-bottom: calc(var(--padding-factor) * 2);
+}

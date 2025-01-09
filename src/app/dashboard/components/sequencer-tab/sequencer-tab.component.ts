@@ -11,7 +11,6 @@ import {Button} from 'primeng/button';
   imports: [
     SequencesListComponent,
     BinaryEditorComponent,
-    ScrollNearEndDirective,
     Button
   ],
   templateUrl: './sequencer-tab.component.html',

@@ -14,8 +14,6 @@ import {HexlifyPipe} from '../../../shared/pipes/hexlify.pipe';
   imports: [
     InputText,
     FormsModule,
-    InputNumber,
-    NgClass,
     Button,
     Inplace,
     ReactiveFormsModule,
